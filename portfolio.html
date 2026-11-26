@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphic Artist Portfolio</title>
+<style>
+  :root{
+    --bg:#050507;
+    --bg2:#0c0c12;
+    --card:#101018;
+    --text:#eaeaf2;
+    --muted:#8b8ba0;
+    --neon:#00f0ff;
+    --neon2:#ff2bd6;
+    --neon3:#8a5cff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    line-height:1.6;overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img,video{max-width:100%;display:block}
+  ::selection{background:var(--neon2);color:#000}
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:#000}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--neon),var(--neon2));border-radius:8px}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 6vw;
+    background:rgba(5,5,7,.75);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,240,255,.15);
+  }
+  .logo{
+    font-weight:800;letter-spacing:3px;font-size:1.1rem;
+    color:var(--neon);text-shadow:0 0 10px var(--neon),0 0 24px var(--neon);
+  }
+  .nav-links{display:flex;gap:30px;list-style:none}
+  .nav-links a{
+    font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    position:relative;padding:4px 0;transition:.3s;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;
+    background:var(--neon);box-shadow:0 0 10px var(--neon);transition:.3s;
+  }
+  .nav-links a:hover,.nav-links a.active{color:#fff}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+  .burger{display:none;background:none;border:0;cursor:pointer;width:32px;height:24px;position:relative}
+  .burger span{position:absolute;left:0;width:100%;height:2px;background:var(--neon);box-shadow:0 0 8px var(--neon);transition:.3s}
+  .burger span:nth-child(1){top:2px}.burger span:nth-child(2){top:11px}.burger span:nth-child(3){top:20px}
+  .burger.open span:nth-child(1){top:11px;transform:rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){top:11px;transform:rotate(-45deg)}
+
+  /* ---------- HOME ---------- */
+  #home{
+    position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:120px 6vw 60px;overflow:hidden;
+  }
+  #particles{position:absolute;inset:0;z-index:0}
+  .grid-floor{
+    position:absolute;left:-50%;right:-50%;bottom:-10%;height:55%;z-index:0;
+    background-image:
+      linear-gradient(rgba(0,240,255,.35) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,240,255,.35) 1px,transparent 1px);
+    background-size:60px 60px;
+    transform:perspective(500px) rotateX(65deg);
+    animation:gridMove 3s linear infinite;
+    mask-image:linear-gradient(to top,#000 10%,transparent 90%);
+    -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 90%);
+  }
+  @keyframes gridMove{to{background-position:0 60px}}
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;z-index:0;animation:float 9s ease-in-out infinite}
+  .orb.o1{width:320px;height:320px;background:var(--neon2);top:8%;left:-5%}
+  .orb.o2{width:380px;height:380px;background:var(--neon);bottom:5%;right:-8%;animation-delay:-4s}
+  @keyframes float{50%{transform:translateY(-40px) scale(1.1)}}
+
+  .hero{
+    position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
+    gap:70px;max-width:1100px;width:100%;flex-wrap:wrap-reverse;
+  }
+  .hero-text{flex:1 1 360px}
+  .hello{
+    color:var(--neon);letter-spacing:6px;font-size:.9rem;text-transform:uppercase;margin-bottom:10px;
+    text-shadow:0 0 10px var(--neon);
+  }
+  .hero h1{
+    font-size:clamp(2.6rem,7vw,5rem);line-height:1.05;font-weight:900;letter-spacing:-1px;
+    color:#fff;
+    text-shadow:0 0 6px #fff,0 0 20px var(--neon),0 0 45px var(--neon);
+    animation:flicker 6s infinite;
+  }
+  @keyframes flicker{
+    0%,18%,22%,25%,53%,57%,100%{text-shadow:0 0 6px #fff,0 0 20px var(--neon),0 0 45px var(--neon)}
+    20%,24%,55%{text-shadow:none}
+  }
+  .role{
+    margin-top:18px;font-size:clamp(1.1rem,2.6vw,1.6rem);font-weight:600;
+    background:linear-gradient(90deg,var(--neon),var(--neon2),var(--neon3),var(--neon));
+    background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 5s linear infinite;
+  }
+  @keyframes shine{to{background-position:300% 0}}
+  .typing{color:var(--muted);margin-top:10px;min-height:28px;font-family:Consolas,monospace}
+  .typing::after{content:"|";color:var(--neon);animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .hero-btns{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:13px 30px;border-radius:50px;font-weight:700;letter-spacing:2px;
+    font-size:.8rem;text-transform:uppercase;cursor:pointer;border:2px solid var(--neon);
+    color:var(--neon);background:transparent;transition:.3s;
+    box-shadow:0 0 12px rgba(0,240,255,.4),inset 0 0 12px rgba(0,240,255,.15);
+  }
+  .btn:hover{background:var(--neon);color:#000;box-shadow:0 0 30px var(--neon)}
+  .btn.alt{border-color:var(--neon2);color:var(--neon2);box-shadow:0 0 12px rgba(255,43,214,.4),inset 0 0 12px rgba(255,43,214,.15)}
+  .btn.alt:hover{background:var(--neon2);color:#000;box-shadow:0 0 30px var(--neon2)}
+
+  .photo-wrap{position:relative;width:min(340px,75vw);aspect-ratio:1;flex:0 0 auto}
+  .photo-wrap::before,.photo-wrap::after{
+    content:"";position:absolute;inset:-10px;border-radius:50%;
+    background:conic-gradient(var(--neon),var(--neon2),var(--neon3),var(--neon));
+    animation:spin 5s linear infinite;
+  }
+  .photo-wrap::after{filter:blur(22px);opacity:.8}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .photo{
+    position:absolute;inset:0;z-index:2;border-radius:50%;overflow:hidden;
+    border:6px solid var(--bg);background:var(--card);
+  }
+  .photo img{width:100%;height:100%;object-fit:cover}
+  .photo .ph{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    font-size:5rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px var(--neon);
+    background:radial-gradient(circle,#15152a,#050507);
+  }
+  .scroll-hint{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;
+    width:24px;height:40px;border:2px solid var(--neon);border-radius:14px;
+    box-shadow:0 0 10px var(--neon);
+  }
+  .scroll-hint::after{
+    content:"";position:absolute;top:7px;left:50%;width:4px;height:8px;margin-left:-2px;
+    background:var(--neon);border-radius:4px;animation:wheel 1.6s infinite;
+  }
+  @keyframes wheel{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(14px)}}
+
+  /* ---------- SECTIONS ---------- */
+  section.pad{padding:100px 6vw;position:relative}
+  .sec-title{text-align:center;margin-bottom:44px}
+  .sec-title h2{
+    font-size:clamp(2rem,5vw,3rem);font-weight:900;letter-spacing:4px;text-transform:uppercase;
+    color:#fff;text-shadow:0 0 8px var(--neon),0 0 26px var(--neon);
+  }
+  .sec-title .bar{
+    width:90px;height:4px;margin:14px auto 0;border-radius:4px;
+    background:linear-gradient(90deg,var(--neon),var(--neon2));box-shadow:0 0 14px var(--neon);
+  }
+  .sec-title p{color:var(--muted);margin-top:14px}
+
+  /* ---------- PROJECTS ---------- */
+  #projects{background:linear-gradient(180deg,var(--bg),var(--bg2) 50%,var(--bg))}
+  .tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:46px}
+  .tab{
+    padding:11px 26px;border-radius:50px;border:1px solid rgba(255,255,255,.15);
+    background:transparent;color:var(--muted);font-weight:700;letter-spacing:1.5px;
+    font-size:.8rem;text-transform:uppercase;cursor:pointer;transition:.3s;
+  }
+  .tab:hover{color:#fff;border-color:var(--neon)}
+  .tab.active{
+    color:#000;background:linear-gradient(90deg,var(--neon),var(--neon3));
+    border-color:transparent;box-shadow:0 0 22px rgba(0,240,255,.6);
+  }
+  .panel{display:none;max-width:1250px;margin:0 auto}
+  .panel.show{display:block;animation:fadeUp .6s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:26px}
+  .grid.photos{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+
+  .card{
+    position:relative;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;
+    border:1px solid rgba(255,255,255,.07);transition:.35s;
+  }
+  .card:hover{
+    transform:translateY(-8px);border-color:var(--neon);
+    box-shadow:0 0 0 1px var(--neon),0 14px 40px rgba(0,240,255,.25);
+  }
+  .thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0a0a14}
+  .photos .thumb{aspect-ratio:1}
+  .mobile .thumb{aspect-ratio:9/14}
+  .thumb img,.thumb video{width:100%;height:100%;object-fit:cover;transition:.5s}
+  .card:hover .thumb img,.card:hover .thumb video{transform:scale(1.08)}
+  .thumb .fallback{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:2.4rem;font-weight:900;color:rgba(255,255,255,.9);
+  }
+  .play{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:64px;height:64px;border-radius:50%;border:2px solid var(--neon);
+    background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 22px var(--neon);transition:.3s;
+  }
+  .play::after{content:"";border-style:solid;border-width:10px 0 10px 17px;border-color:transparent transparent transparent var(--neon);margin-left:4px}
+  .card:hover .play{transform:translate(-50%,-50%) scale(1.15)}
+  .info{padding:16px 18px 18px}
+  .info h3{font-size:1.05rem;letter-spacing:.5px}
+  .info p{color:var(--muted);font-size:.88rem;margin-top:4px}
+  .photos .info{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 12px;
+    background:linear-gradient(transparent,rgba(0,0,0,.9));opacity:0;transition:.3s}
+  .photos .card:hover .info{opacity:1}
+  .visit{
+    display:inline-block;margin-top:10px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
+    color:var(--neon2);font-weight:700;text-shadow:0 0 8px var(--neon2);
+  }
+  .empty{text-align:center;color:var(--muted);padding:40px}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);
+    display:none;align-items:center;justify-content:center;padding:30px;
+  }
+  .lightbox.open{display:flex;animation:fadeUp .3s}
+  .lb-content{max-width:min(1100px,100%);max-height:100%;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
+  .lb-content img,.lb-content video{max-height:78vh;border-radius:12px;box-shadow:0 0 40px rgba(0,240,255,.35);border:1px solid var(--neon)}
+  .lb-content iframe{width:100%;aspect-ratio:16/9;max-height:78vh;border:1px solid var(--neon);border-radius:12px;box-shadow:0 0 40px rgba(0,240,255,.35)}
+  .lb-caption{color:var(--muted);text-align:center}
+  .lb-close{
+    position:absolute;top:18px;right:24px;font-size:2.4rem;color:var(--neon);cursor:pointer;
+    background:none;border:0;text-shadow:0 0 12px var(--neon);line-height:1;
+  }
+
+  /* ---------- CONTACT ---------- */
+  #contact{background:var(--bg2);overflow:hidden}
+  #contact::before{
+    content:"";position:absolute;width:500px;height:500px;border-radius:50%;
+    background:var(--neon3);filter:blur(140px);opacity:.25;top:-150px;left:50%;transform:translateX(-50%);
+  }
+  .contact-box{position:relative;max-width:900px;margin:0 auto;text-align:center}
+  .contact-name{
+    font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;margin-bottom:34px;
+    background:linear-gradient(90deg,var(--neon),var(--neon2));-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+  .c-card{
+    display:block;padding:30px 20px;border-radius:18px;background:var(--card);
+    border:1px solid rgba(255,255,255,.08);transition:.35s;word-break:break-word;
+  }
+  .c-card:hover{transform:translateY(-8px);border-color:var(--neon2);box-shadow:0 0 30px rgba(255,43,214,.35)}
+  .c-icon{
+    width:58px;height:58px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--neon);box-shadow:0 0 14px var(--neon),inset 0 0 12px rgba(0,240,255,.3);
+  }
+  .c-icon svg{width:26px;height:26px;fill:var(--neon);filter:drop-shadow(0 0 6px var(--neon))}
+  .c-card small{display:block;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-size:.7rem;margin-bottom:4px}
+  .c-card span{font-weight:600}
+  footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border-top:1px solid rgba(0,240,255,.15);background:#000}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(34px);transition:1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- MOBILE ---------- */
+  @media(max-width:760px){
+    .burger{display:block}
+    .nav-links{
+      position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+      background:rgba(5,5,7,.97);max-height:0;overflow:hidden;transition:.4s;
+    }
+    .nav-links.open{max-height:300px;border-bottom:1px solid var(--neon)}
+    .nav-links li{text-align:center;padding:14px}
+    .hero{gap:40px;text-align:center}
+    .hero-btns{justify-content:center}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="logo" id="logoText">PORTFOLIO</a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <canvas id="particles"></canvas>
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="grid-floor"></div>
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hello">Hello, I'm</div>
+      <h1 id="heroName">Ivan Sison</h1>
+      <div class="role" id="heroRole">Graphic Artist</div>
+      <div class="typing" id="typing"></div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn">View My Work</a>
+        <a href="#contact" class="btn alt">Contact Me</a>
+      </div>
+    </div>
+    <div class="photo-wrap">
+      <div class="photo" id="photoBox"></div>
+    </div>
+  </div>
+  <div class="scroll-hint"></div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="pad">
+  <div class="sec-title reveal">
+    <h2>Projects</h2><div class="bar"></div>
+    <p>A selection of my creative work</p>
+  </div>
+
+  <div class="tabs reveal">
+    <button class="tab active" data-tab="videos">Videos</button>
+    <button class="tab" data-tab="photos">Photos</button>
+    <button class="tab" data-tab="websites">Websites</button>
+    <button class="tab" data-tab="mobile">Mobile Apps</button>
+  </div>
+
+  <div class="panel show" id="panel-videos"><div class="grid" id="grid-videos"></div></div>
+  <div class="panel" id="panel-photos"><div class="grid photos" id="grid-photos"></div></div>
+  <div class="panel" id="panel-websites"><div class="grid" id="grid-websites"></div></div>
+  <div class="panel" id="panel-mobile"><div class="grid mobile" id="grid-mobile"></div></div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="pad">
+  <div class="sec-title reveal">
+    <h2>Contact</h2><div class="bar"></div>
+    <p>Let's create something amazing together</p>
+  </div>
+  <div class="contact-box reveal">
+    <div class="contact-name" id="contactName">Ivan Sison</div>
+    <div class="contact-grid">
+      <a class="c-card" id="cFb" target="_blank" rel="noopener">
+        <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg></div>
+        <small>Facebook</small><span id="fbText"></span>
+      </a>
+      <a class="c-card" id="cMail">
+        <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg></div>
+        <small>Gmail</small><span id="mailText"></span>
+      </a>
+      <a class="c-card" id="cPhone">
+        <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></div>
+        <small>Contact Number</small><span id="phoneText"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>© <span id="year"></span> <span id="footName">Ivan Sison</span>. All rights reserved.</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <div class="lb-content" id="lbContent"></div>
+</div>
+
+<script>
+/* =====================================================
+   EDIT YOUR INFO HERE
+   ===================================================== */
+const CONFIG = {
+  name: "Ivan Sison",
+  role: "Graphic Artist",
+  photo: "profile.jpg",              // your picture (put the file beside this HTML)
+  typingLines: [
+    "Logo & Brand Identity",
+    "Photo Editing & Retouching",
+    "Video Editing & Motion",
+    "Web & Mobile UI Design"
+  ],
+  contact: {
+    facebook: "https://www.facebook.com/ivan.sison.587",
+    facebookLabel: "facebook.com/ivansison",
+    email: "ivansison92@gmail.com",
+    phone: "+63 9480150374"
+  }
+};
+
+/* Add your projects below.
+   - videos:   src = "videos/clip.mp4"  OR a YouTube link;  poster = optional thumbnail image
+   - photos:   src = "photos/pic.jpg"
+   - websites: img = screenshot, link = live website URL
+   - mobile:   img = app screenshot, link = optional URL
+   If an image file is missing, a neon placeholder is shown automatically. */
+const PROJECTS = {
+  videos: [
+    { title: "Video Project 1", desc: "Short description", src: "videos/video1.mp4", poster: "videos/video1.jpg" },
+    { title: "Video Project 2", desc: "Short description", src: "videos/video2.mp4", poster: "videos/video2.jpg" },
+    { title: "Video Project 3", desc: "Short description", src: "videos/video3.mp4", poster: "videos/video3.jpg" },
+    { title: "Video Project 4", desc: "Short description", src: "videos/video4.mp4", poster: "videos/video4.jpg" },
+    { title: "Video Project 5", desc: "Short description", src: "videos/video5.mp4", poster: "videos/video5.jpg" },
+    { title: "Video Project 6", desc: "Short description", src: "videos/video6.mp4", poster: "videos/video6.jpg" },
+    { title: "Video Project 7", desc: "Short description", src: "videos/video7.mp4", poster: "videos/video7.jpg" },
+    { title: "Video Project 8", desc: "Short description", src: "videos/video8.mp4", poster: "videos/video8.jpg" },
+    { title: "Video Project 9", desc: "Short description", src: "videos/video9.mp4", poster: "videos/video9.jpg" },
+    { title: "Video Project 10", desc: "Short description", src: "videos/video10.mp4", poster: "videos/video10.jpg" },
+    { title: "Video Project 11", desc: "Short description", src: "videos/video11.mp4", poster: "videos/video11.jpg" },
+    { title: "Video Project 12", desc: "Short description", src: "videos/video12.mp4", poster: "videos/video12.jpg" }
+  ],
+  photos: [
+    { title: "Photo 1", src: "photos/photo1.png" },
+    { title: "Photo 2", src: "photos/photo2.png" },
+    { title: "Photo 3", src: "photos/photo3.png" },
+    { title: "Photo 4", src: "photos/photo4.png" },
+    { title: "Photo 5", src: "photos/photo5.png" },
+    { title: "Photo 6", src: "photos/photo6.jpg" },
+    { title: "Photo 7", src: "photos/photo7.png" },
+    { title: "Photo 8", src: "photos/photo8.png" },
+    { title: "Photo 9", src: "photos/photo9.png" },
+    { title: "Photo 11", src: "photos/photo11.png" },
+    { title: "Photo 12", src: "photos/photo12.jpg" },
+    { title: "Photo 13", src: "photos/photo13.jpg" },
+    { title: "Photo 14", src: "photos/photo14.jpg" },
+    { title: "Photo 15", src: "photos/photo15.jpg" },
+    { title: "Photo 16", src: "photos/photo16.png" },
+    { title: "Photo 17", src: "photos/photo17.png" },
+    { title: "Talkers 1", src: "photos/Talkers 1.png" },
+    { title: "Talkers 2", src: "photos/Talkers 2.png" },
+    { title: "Talkers 3", src: "photos/Talkers 3.png" },
+    { title: "Talkers 4", src: "photos/Talkers 4.png" },
+    { title: "Talkers 5", src: "photos/Talkers 5.png" },
+    { title: "Talkers 6", src: "photos/Talkers 6.png" },
+
+  ],
+  websites: [
+    { title: "Website Project 1", desc: "Landing page design", img: "websites/site1.jpg", link: "https://example.com" },
+    { title: "Website Project 2", desc: "E-commerce design",   img: "websites/site2.jpg", link: "https://example.com" },
+    { title: "Website Project 3", desc: "Portfolio design",    img: "websites/site3.jpg", link: "https://example.com" }
+  ],
+  mobile: [
+    { title: "Mobile App 1", desc: "UI/UX design", img: "mobile/app1.jpg", link: "" },
+    { title: "Mobile App 2", desc: "UI/UX design", img: "mobile/app2.jpg", link: "" },
+    { title: "Mobile App 3", desc: "UI/UX design", img: "mobile/app3.jpg", link: "" }
+  ]
+};
+
+/* =====================================================
+   SCRIPT (no need to edit below)
+   ===================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const GRADS = [
+  "linear-gradient(135deg,#00f0ff,#8a5cff)",
+  "linear-gradient(135deg,#ff2bd6,#8a5cff)",
+  "linear-gradient(135deg,#00f0ff,#ff2bd6)"
+];
+
+/* Fill basic info */
+(function fillInfo() {
+  const c = CONFIG;
+  $("#heroName").textContent = c.name;
+  $("#heroRole").textContent = c.role;
+  $("#contactName").textContent = c.name;
+  $("#footName").textContent = c.name;
+  $("#logoText").textContent = c.name.split(" ")[0].toUpperCase();
+  $("#year").textContent = new Date().getFullYear();
+  document.title = c.name + " | " + c.role;
+
+  // photo with fallback initials
+  const box = $("#photoBox");
+  const initials = c.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+  const img = new Image();
+  img.alt = c.name;
+  img.onload = () => { box.innerHTML = ""; box.appendChild(img); };
+  img.onerror = () => { box.innerHTML = `<div class="ph">${initials}</div>`; };
+  box.innerHTML = `<div class="ph">${initials}</div>`;
+  img.src = c.photo;
+
+  // contact
+  $("#cFb").href = c.contact.facebook;
+  $("#fbText").textContent = c.contact.facebookLabel;
+  $("#cMail").href = "mailto:" + c.contact.email;
+  $("#mailText").textContent = c.contact.email;
+  $("#cPhone").href = "tel:" + c.contact.phone.replace(/\s/g, "");
+  $("#phoneText").textContent = c.contact.phone;
+})();
+
+/* Typing effect */
+(function typing() {
+  const el = $("#typing"), lines = CONFIG.typingLines;
+  let li = 0, ci = 0, del = false;
+  function tick() {
+    const text = lines[li];
+    el.textContent = text.slice(0, ci);
+    if (!del && ci < text.length) { ci++; setTimeout(tick, 80); }
+    else if (!del) { del = true; setTimeout(tick, 1400); }
+    else if (ci > 0) { ci--; setTimeout(tick, 40); }
+    else { del = false; li = (li + 1) % lines.length; setTimeout(tick, 300); }
+  }
+  tick();
+})();
+
+/* Particle background */
+(function particles() {
+  const cv = $("#particles"), ctx = cv.getContext("2d");
+  let w, h, pts = [];
+  const colors = ["#00f0ff", "#ff2bd6", "#8a5cff"];
+  function resize() {
+    w = cv.width = cv.offsetWidth;
+    h = cv.height = cv.offsetHeight;
+    const n = Math.min(90, Math.floor(w * h / 18000));
+    pts = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5,
+      r: Math.random() * 2 + .6, c: colors[Math.floor(Math.random() * 3)]
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of pts) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = 12; ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
+      if (d < 120) {
+        ctx.strokeStyle = `rgba(0,240,255,${.18 * (1 - d / 120)})`;
+        ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  addEventListener("resize", resize);
+  resize(); draw();
+})();
+
+/* Helpers */
+const isYouTube = u => /youtu\.?be/.test(u);
+function ytEmbed(u) {
+  const m = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}?autoplay=1` : u;
+}
+function ytThumb(u) {
+  const m = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);
+  return m ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg` : "";
+}
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* Thumbnail with neon fallback */
+function thumb(src, i, label) {
+  const g = GRADS[i % GRADS.length];
+  return `<div class="thumb" style="background:${g}">
+    <div class="fallback">${esc(label)}</div>
+    ${src ? `<img src="${esc(src)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+  </div>`;
+}
+
+/* Render panels */
+function render() {
+  const gv = $("#grid-videos"), gp = $("#grid-photos"), gw = $("#grid-websites"), gm = $("#grid-mobile");
+
+  gv.innerHTML = PROJECTS.videos.map((v, i) => {
+    const poster = v.poster || (isYouTube(v.src) ? ytThumb(v.src) : "");
+    return `<div class="card" data-type="video" data-i="${i}">
+      ${thumb(poster, i, "VIDEO").replace(/<\/div>\s*$/, '<div class="play"></div></div>')}
+      <div class="info"><h3>${esc(v.title)}</h3><p>${esc(v.desc)}</p></div></div>`;
+  }).join("") || `<div class="empty">No videos yet.</div>`;
+
+  gp.innerHTML = PROJECTS.photos.map((p, i) => `
+    <div class="card" data-type="photo" data-i="${i}">
+      ${thumb(p.src, i, "PHOTO")}
+      <div class="info"><h3>${esc(p.title)}</h3></div></div>`).join("") || `<div class="empty">No photos yet.</div>`;
+
+  gw.innerHTML = PROJECTS.websites.map((w, i) => `
+    <div class="card" data-type="website" data-i="${i}">
+      ${thumb(w.img, i, "WEB")}
+      <div class="info"><h3>${esc(w.title)}</h3><p>${esc(w.desc)}</p>
+      ${w.link ? `<a class="visit" href="${esc(w.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Visit Site →</a>` : ""}</div></div>`).join("") || `<div class="empty">No websites yet.</div>`;
+
+  gm.innerHTML = PROJECTS.mobile.map((m, i) => `
+    <div class="card" data-type="mobile" data-i="${i}">
+      ${thumb(m.img, i, "APP")}
+      <div class="info"><h3>${esc(m.title)}</h3><p>${esc(m.desc)}</p>
+      ${m.link ? `<a class="visit" href="${esc(m.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">View →</a>` : ""}</div></div>`).join("") || `<div class="empty">No apps yet.</div>`;
+}
+render();
+
+/* Tabs */
+$$(".tab").forEach(t => t.addEventListener("click", () => {
+  $$(".tab").forEach(x => x.classList.remove("active"));
+  $$(".panel").forEach(x => x.classList.remove("show"));
+  t.classList.add("active");
+  $("#panel-" + t.dataset.tab).classList.add("show");
+}));
+
+/* Lightbox */
+const lb = $("#lightbox"), lbc = $("#lbContent");
+function openLB(html) { lbc.innerHTML = html; lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+function closeLB() { lb.classList.remove("open"); lbc.innerHTML = ""; document.body.style.overflow = ""; }
+$("#lbClose").onclick = closeLB;
+lb.addEventListener("click", e => { if (e.target === lb) closeLB(); });
+addEventListener("keydown", e => { if (e.key === "Escape") closeLB(); });
+
+document.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if (!card) return;
+  const i = +card.dataset.i, type = card.dataset.type;
+  if (type === "video") {
+    const v = PROJECTS.videos[i];
+    openLB(isYouTube(v.src)
+      ? `<iframe src="${esc(ytEmbed(v.src))}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><div class="lb-caption">${esc(v.title)}</div>`
+      : `<video src="${esc(v.src)}" controls autoplay></video><div class="lb-caption">${esc(v.title)}</div>`);
+  } else if (type === "photo") {
+    const p = PROJECTS.photos[i];
+    openLB(`<img src="${esc(p.src)}" alt=""><div class="lb-caption">${esc(p.title)}</div>`);
+  } else {
+    const p = PROJECTS[type === "website" ? "websites" : "mobile"][i];
+    if (p.img) openLB(`<img src="${esc(p.img)}" alt=""><div class="lb-caption">${esc(p.title)} — ${esc(p.desc)}</div>`);
+  }
+});
+
+/* Mobile menu */
+const burger = $("#burger"), links = $("#navLinks");
+burger.onclick = () => { burger.classList.toggle("open"); links.classList.toggle("open"); };
+$$("#navLinks a").forEach(a => a.addEventListener("click", () => { burger.classList.remove("open"); links.classList.remove("open"); }));
+
+/* Scroll reveal + active nav */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+$$(".reveal").forEach(el => io.observe(el));
+
+const secs = ["home", "projects", "contact"].map(id => $("#" + id));
+addEventListener("scroll", () => {
+  let cur = "home";
+  secs.forEach(s => { if (scrollY >= s.offsetTop - 200) cur = s.id; });
+  $$("#navLinks a").forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur));
+});
+</script>
+</body>
+</html>
